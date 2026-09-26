@@ -1,0 +1,225 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100 antialiased;
+  }
+}
+
+/* Dark Mode Theme Styles */
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: #020617; /* slate-950 */
+  color: #f1f5f9; /* slate-100 */
+}
+
+/* Base Cards and Containers */
+html.dark .bg-white {
+  background-color: #0f172a !important; /* slate-900 */
+}
+
+html.dark .bg-slate-50,
+html.dark .bg-slate-100 {
+  background-color: #1e293b !important; /* slate-800 */
+}
+
+html.dark .border-slate-100,
+html.dark .border-slate-200,
+html.dark .border-slate-300 {
+  border-color: #334155 !important; /* slate-700 */
+}
+
+/* Text Colors */
+html.dark .text-slate-900,
+html.dark .text-slate-800,
+html.dark .text-slate-700 {
+  color: #f8fafc !important; /* slate-50 */
+}
+
+html.dark .text-slate-600 {
+  color: #cbd5e1 !important; /* slate-300 */
+}
+
+html.dark .text-slate-500,
+html.dark .text-slate-400 {
+  color: #94a3b8 !important; /* slate-400 */
+}
+
+/* Inputs, Selects, and Textareas */
+html.dark input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="submit"]):not([type="button"]),
+html.dark select,
+html.dark textarea {
+  background-color: #0b1120 !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+html.dark input:disabled,
+html.dark select:disabled,
+html.dark textarea:disabled {
+  background-color: #1e293b !important;
+  color: #64748b !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+/* Interactive elements in dark mode */
+html.dark .hover\:bg-slate-50:hover {
+  background-color: #1e293b !important;
+}
+
+html.dark .hover\:bg-slate-100:hover {
+  background-color: #334155 !important;
+}
+
+html.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+html.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #334155 !important;
+}
+
+/* Watermark on Screen */
+.contract-watermark-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 480px;
+  max-width: 80%;
+  opacity: 0.055;
+  pointer-events: none;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contract-watermark {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Print Overrides: Strictly Clean Light Format with Repeating Header & Footer */
+@media print {
+  @page {
+    size: letter portrait;
+    margin: 12mm 15mm 12mm 15mm;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #111827 !important;
+    height: auto !important;
+    overflow: visible !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 10.5pt !important;
+  }
+
+  #root, .flex.h-screen {
+    height: auto !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  .overflow-y-auto, .overflow-hidden {
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  /* Preserve colors and backgrounds on tables and graphics */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .contract-print-page {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    color: #111827 !important;
+  }
+
+  /* Table paging mechanism for repeating header and footer across all pages */
+  table.contract-doc-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    border: none !important;
+  }
+
+  table.contract-doc-table > thead {
+    display: table-header-group !important;
+  }
+
+  table.contract-doc-table > tfoot {
+    display: table-footer-group !important;
+  }
+
+  table.contract-doc-table > tbody > tr > td {
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  /* Centered Watermark repeating on every print page */
+  .contract-watermark-container {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 480px !important;
+    max-width: 80% !important;
+    z-index: 0 !important;
+    opacity: 0.055 !important;
+    pointer-events: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .contract-watermark {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+
+  .contract-print-page table {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .contract-print-page tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .contract-print-page .print-avoid-break {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}
+

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Renova Energy PRO - Cotizador & CRM Solar</title>
+    <meta name="description" content="Plataforma inteligente de dimensionamiento solar fotovoltaico, levantamiento técnico en campo y CRM para Renova Energy S.A.S." />
+    
+    <!-- PWA Web App Manifest -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    
+    <!-- Theme & Colors -->
+    <meta name="theme-color" content="#2d8a58" />
+    <meta name="msapplication-TileColor" content="#2d8a58" />
+    <meta name="msapplication-TileImage" content="/icons/icon-192x192.png" />
+
+    <!-- Icons & Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+
+    <!-- Apple Mobile Web App Meta -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Renova Solar" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="Renova Solar" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-slate-50 text-slate-900 antialiased font-['Plus_Jakarta_Sans',sans-serif]">
+    <div id="root">
+      <!-- Fallback when opened directly from file system (file:///) instead of http://localhost:3001 -->
+      <div id="file-protocol-warning" style="display: none; min-height: 100vh; background: #0f172a; color: white; font-family: system-ui, -apple-system, sans-serif; align-items: center; justify-content: center; padding: 20px;">
+        <div style="max-width: 520px; width: 100%; background: #1e293b; border: 1px solid #334155; border-radius: 24px; padding: 36px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);">
+          <div style="width: 64px; height: 64px; background: #f59e0b; border-radius: 18px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+          </div>
+          <h2 style="font-size: 22px; font-weight: 800; margin-bottom: 8px; color: #fff;">SolarQuote <span style="color: #fbbf24;">PRO</span></h2>
+          <p style="font-size: 14px; color: #94a3b8; line-height: 1.5; margin-bottom: 24px;">
+            Has abierto el archivo <b>index.html</b> directamente. Esta aplicación web cuenta con base de datos y debe ejecutarse a través de su servidor local.
+          </p>
+          <a href="http://localhost:3001" style="display: block; padding: 14px 20px; background: #f59e0b; color: #000; font-weight: 800; text-decoration: none; border-radius: 14px; font-size: 14px; box-shadow: 0 10px 15px -3px rgba(245,158,11,0.3); margin-bottom: 16px;">
+            Abrir Aplicación en http://localhost:3001 &rarr;
+          </a>
+          <p style="font-size: 12px; color: #64748b; margin: 0;">
+            💡 Si el servidor aún no está iniciado, haz doble clic en <b>iniciar.bat</b> en la carpeta del proyecto.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Detect if user opened the file directly in browser via file:///
+      if (window.location.protocol === 'file:') {
+        var warningEl = document.getElementById('file-protocol-warning');
+        if (warningEl) {
+          warningEl.style.display = 'flex';
+        }
+        // Try auto redirecting to local server
+        setTimeout(function() {
+          window.location.href = 'http://localhost:3001';
+        }, 1200);
+      }
+    </script>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

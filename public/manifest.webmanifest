@@ -1,0 +1,65 @@
+{
+  "id": "renova-energy-solar-pro",
+  "name": "Renova Energy PRO - Cotizador & CRM Solar",
+  "short_name": "Renova Solar",
+  "description": "Plataforma inteligente de cotizaciones solares fotovoltaicas, levantamiento técnico en campo y CRM para Renova Energy S.A.S.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#020617",
+  "theme_color": "#2d8a58",
+  "lang": "es-CO",
+  "dir": "ltr",
+  "categories": ["business", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Nueva Cotización",
+      "short_name": "Cotizar",
+      "description": "Crear un nuevo dimensionamiento solar fotovoltaico",
+      "url": "/cotizador",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Visitas Técnicas en Campo",
+      "short_name": "Visitas",
+      "description": "Agendar y diligenciar levantamiento técnico",
+      "url": "/visitas",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Seguimiento CRM",
+      "short_name": "Seguimiento",
+      "description": "Pipeline comercial y tareas de clientes probables",
+      "url": "/seguimiento",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="renovaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2d8a58"/>
+      <stop offset="100%" stop-color="#48bb78"/>
+    </linearGradient>
+  </defs>
+  <!-- Background squircle -->
+  <rect width="512" height="512" rx="128" fill="url(#renovaGrad)"/>
+  <!-- Radiating Sun Rays -->
+  <g stroke="#ffffff" stroke-width="28" stroke-linecap="round">
+    <line x1="256" y1="90" x2="256" y2="50"/>
+    <line x1="256" y1="422" x2="256" y2="462"/>
+    <line x1="90" y1="256" x2="50" y2="256"/>
+    <line x1="422" y1="256" x2="462" y2="256"/>
+    <line x1="138" y1="138" x2="110" y2="110"/>
+    <line x1="374" y1="374" x2="402" y2="402"/>
+    <line x1="138" y1="374" x2="110" y2="402"/>
+    <line x1="374" y1="138" x2="402" y2="110"/>
+  </g>
+  <!-- Sun Disk -->
+  <circle cx="256" cy="256" r="108" fill="#ffffff"/>
+  <!-- Energy Lightning Bolt (Zap) -->
+  <polygon points="266,160 216,260 252,260 236,352 306,242 266,242" fill="#2d8a58"/>
+</svg>
