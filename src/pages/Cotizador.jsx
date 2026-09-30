@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   SunMedium,
@@ -41,6 +41,7 @@ export default function Cotizador({ onNotify }) {
   const [companySettings, setCompanySettings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const saveLockRef = useRef(false);
 
   // Modal new client
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
@@ -521,6 +522,8 @@ export default function Cotizador({ onNotify }) {
 
   // Submit and save quote
   const handleSaveQuote = async () => {
+    if (saveLockRef.current) return;
+
     if (!selectedClientId) {
       if (onNotify) onNotify({ type: 'warning', message: 'Debes seleccionar un cliente para guardar la cotización.' });
       return;
@@ -532,6 +535,7 @@ export default function Cotizador({ onNotify }) {
     }
 
     try {
+      saveLockRef.current = true;
       setSaving(true);
       const payload = {
         client_id: parseInt(selectedClientId),
@@ -603,6 +607,7 @@ export default function Cotizador({ onNotify }) {
     } catch (err) {
       if (onNotify) onNotify({ type: 'error', message: err.message });
     } finally {
+      saveLockRef.current = false;
       setSaving(false);
     }
   };

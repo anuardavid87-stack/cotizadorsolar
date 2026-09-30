@@ -92,13 +92,42 @@ router.post('/', authenticateToken, (req, res) => {
       return res.status(400).json({ error: 'El nombre o razón social es obligatorio.' });
     }
 
+    const trimmedName = name.trim();
+    const cleanDoc = (doc_number || '').trim().replace(/[^a-zA-Z0-9]/g, '');
+
+    // 1. Document Uniqueness Check
+    if (cleanDoc.length >= 4) {
+      const existingByDoc = db.prepare(`
+        SELECT id, name, doc_type, doc_number FROM clients 
+        WHERE REPLACE(REPLACE(REPLACE(TRIM(doc_number), '.', ''), '-', ''), ' ', '') = ?
+      `).get(cleanDoc);
+      if (existingByDoc) {
+        return res.status(400).json({ 
+          error: `Ya existe un cliente registrado con el número de documento ${existingByDoc.doc_type || 'CC'} ${existingByDoc.doc_number} ("${existingByDoc.name}"). Para evitar duplicados, consulta o actualiza su ficha.`
+        });
+      }
+    }
+
+    // 2. Anti-double-click debounce: check if client with exact same name was created within the last 15 seconds
+    const recentDuplicate = db.prepare(`
+      SELECT id, name, created_at FROM clients 
+      WHERE LOWER(TRIM(name)) = LOWER(?) 
+        AND (strftime('%s', 'now') - strftime('%s', created_at)) < 15
+    `).get(trimmedName);
+
+    if (recentDuplicate) {
+      return res.status(409).json({ 
+        error: `Se detectó una solicitud duplicada enviada hace instantes. El cliente "${recentDuplicate.name}" ya fue registrado exitosamente.`
+      });
+    }
+
     const result = db.prepare(`
       INSERT INTO clients (
         name, doc_type, doc_number, phone, email, address,
         city, department, operator, client_type, voltage_level, stratum, notes
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
-      name.trim(), doc_type || 'CC', doc_number || '', phone || '', email || '',
+      trimmedName, doc_type || 'CC', doc_number || '', phone || '', email || '',
       address || '', city || '', department || '', operator || 'Enel',
       client_type || 'Residencial', voltage_level || 'Monofásico 120/240V', stratum || '4', notes || ''
     );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Users,
@@ -71,6 +71,8 @@ export default function Clientes({ onNotify }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [profileData, setProfileData] = useState(null);
   const [loadingProfile, setLoadingProfile] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const isSubmittingRef = useRef(false);
 
   const fetchClients = async () => {
     try {
@@ -190,6 +192,10 @@ export default function Clientes({ onNotify }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
+    setIsSubmitting(true);
+
     try {
       const url = editingClient ? `/api/clients/${editingClient.id}` : '/api/clients';
       const method = editingClient ? 'PUT' : 'POST';
@@ -211,6 +217,9 @@ export default function Clientes({ onNotify }) {
       fetchClients();
     } catch (err) {
       if (onNotify) onNotify({ type: 'error', message: err.message });
+    } finally {
+      isSubmittingRef.current = false;
+      setIsSubmitting(false);
     }
   };
 
@@ -871,9 +880,17 @@ export default function Clientes({ onNotify }) {
             </button>
             <button
               type="submit"
-              className="px-5 py-2 text-xs font-bold text-slate-950 bg-amber-500 hover:bg-amber-600 rounded-xl shadow"
+              disabled={isSubmitting}
+              className="px-5 py-2 text-xs font-bold text-slate-950 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl shadow flex items-center gap-1.5 transition-all cursor-pointer"
             >
-              {editingClient ? 'Actualizar Cliente' : 'Guardar Cliente'}
+              {isSubmitting ? (
+                <>
+                  <div className="w-3.5 h-3.5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
+                  <span>Guardando...</span>
+                </>
+              ) : (
+                <span>{editingClient ? 'Actualizar Cliente' : 'Guardar Cliente'}</span>
+              )}
             </button>
           </div>
         </form>

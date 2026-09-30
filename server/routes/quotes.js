@@ -193,6 +193,23 @@ router.post('/', authenticateToken, requirePermission('quotes'), (req, res) => {
       }
     }
 
+    // Anti-double-click debounce for quotes (prevents rapid double submissions)
+    const recentDuplicateQuote = db.prepare(`
+      SELECT id, quote_code, total_price, created_at FROM quotes 
+      WHERE client_id = ? 
+        AND ABS(total_price - ?) < 1
+        AND (strftime('%s', 'now') - strftime('%s', created_at)) < 20
+    `).get(client.id, parseFloat(total_price) || 0);
+
+    if (recentDuplicateQuote) {
+      console.log(`[Anti-Duplicate] Prevented duplicate quote creation for client ${client.id}. Returning existing ${recentDuplicateQuote.quote_code}`);
+      return res.status(200).json({
+        message: `Cotización ${recentDuplicateQuote.quote_code} ya fue procesada exitosamente`,
+        id: recentDuplicateQuote.id,
+        quote_code: recentDuplicateQuote.quote_code
+      });
+    }
+
     const quoteCode = generateNextQuoteCode();
 
     const insertStmt = db.prepare(`

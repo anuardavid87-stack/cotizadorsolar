@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   ClipboardCheck,
@@ -190,8 +190,15 @@ export default function Visitas({ onNotify, onStatsUpdate }) {
     setIsScheduleModalOpen(true);
   };
 
+  const [isScheduling, setIsScheduling] = useState(false);
+  const isSchedulingRef = useRef(false);
+
   const handleScheduleSubmit = async (e) => {
     e.preventDefault();
+    if (isSchedulingRef.current) return;
+    isSchedulingRef.current = true;
+    setIsScheduling(true);
+
     try {
       const res = await authFetch('/api/visits', {
         method: 'POST',
@@ -200,11 +207,14 @@ export default function Visitas({ onNotify, onStatsUpdate }) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error al agendar visita');
 
-      if (onNotify) onNotify({ type: 'success', message: `Visita ${data.visit_code} agendada con éxito.` });
+      if (onNotify) onNotify({ type: 'success', message: data.message || `Visita ${data.visit_code} agendada con éxito.` });
       setIsScheduleModalOpen(false);
       fetchVisits();
     } catch (err) {
       if (onNotify) onNotify({ type: 'error', message: err.message });
+    } finally {
+      isSchedulingRef.current = false;
+      setIsScheduling(false);
     }
   };
 
@@ -2364,9 +2374,17 @@ export default function Visitas({ onNotify, onStatsUpdate }) {
             </button>
             <button
               type="submit"
-              className="px-5 py-2 text-xs font-bold text-white bg-[#2d8a58] hover:bg-[#237348] rounded-xl shadow cursor-pointer"
+              disabled={isScheduling}
+              className="px-5 py-2 text-xs font-bold text-white bg-[#2d8a58] hover:bg-[#237348] disabled:opacity-50 disabled:cursor-not-allowed rounded-xl shadow flex items-center gap-1.5 transition-all cursor-pointer"
             >
-              Agendar Visita
+              {isScheduling ? (
+                <>
+                  <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <span>Agendando...</span>
+                </>
+              ) : (
+                <span>Agendar Visita</span>
+              )}
             </button>
           </div>
         </form>

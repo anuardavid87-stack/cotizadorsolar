@@ -150,6 +150,33 @@ router.post('/', authenticateToken, requirePermission('visits'), (req, res) => {
       return res.status(400).json({ error: 'La fecha de la visita es obligatoria.' });
     }
 
+    // 1. Anti-double-click debounce: check if any visit for this client was created in the last 15 seconds
+    const recentDuplicate = db.prepare(`
+      SELECT id, visit_code, created_at FROM technical_visits 
+      WHERE client_id = ? 
+        AND (strftime('%s', 'now') - strftime('%s', created_at)) < 15
+    `).get(client.id);
+
+    if (recentDuplicate) {
+      return res.status(200).json({
+        message: `Visita técnica ${recentDuplicate.visit_code} ya fue agendada hace instantes`,
+        id: recentDuplicate.id,
+        visit_code: recentDuplicate.visit_code
+      });
+    }
+
+    // 2. Prevent duplicate active visits for the same client on the same day and time
+    const sameScheduleVisit = db.prepare(`
+      SELECT id, visit_code, scheduled_date, scheduled_time FROM technical_visits 
+      WHERE client_id = ? AND scheduled_date = ? AND scheduled_time = ? AND status != 'cancelada'
+    `).get(client.id, scheduled_date, scheduled_time || '09:00 AM');
+
+    if (sameScheduleVisit) {
+      return res.status(400).json({
+        error: `El cliente ya tiene la visita técnica ${sameScheduleVisit.visit_code} agendada para la fecha ${scheduled_date} a las ${scheduled_time || '09:00 AM'}. Puedes editarla en lugar de duplicarla.`
+      });
+    }
+
     const visitCode = generateNextVisitCode();
     
     // Safely resolve foreign key for user_id
