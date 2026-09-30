@@ -226,9 +226,22 @@ export default function Sidebar({ pendingCounts }) {
         )}
       </nav>
 
-      {/* PWA Install Button - Sleek & Compact */}
-      {!isInstalled && (
-        <div className="px-3 py-2 border-t border-slate-800/60 bg-slate-950/20">
+      {/* PWA & Android APK Download Section */}
+      <div className="px-3 py-2 border-t border-slate-800/60 bg-slate-950/20 space-y-1.5">
+        <a
+          href="/renova-solar.apk"
+          download="renova-solar.apk"
+          className="w-full py-1.5 px-3 rounded-xl bg-gradient-to-r from-[#2d8a58] to-emerald-600 hover:from-[#237348] hover:to-emerald-500 text-white font-bold text-xs flex items-center justify-between transition-all shadow-sm group"
+          title="Descargar instalador APK para teléfonos Android"
+        >
+          <div className="flex items-center gap-2">
+            <Smartphone className="w-3.5 h-3.5 text-emerald-200 group-hover:scale-110 transition-transform" />
+            <span>Descargar App (.APK)</span>
+          </div>
+          <Download className="w-3.5 h-3.5" />
+        </a>
+
+        {!isInstalled && (
           <button
             onClick={installApp}
             type="button"
@@ -237,12 +250,12 @@ export default function Sidebar({ pendingCounts }) {
           >
             <div className="flex items-center gap-2">
               <Smartphone className="w-3.5 h-3.5 text-[#48bb78]" />
-              <span>Instalar Aplicación</span>
+              <span>Instalar PWA</span>
             </div>
             <Download className="w-3.5 h-3.5" />
           </button>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* User Status Card */}
       <div className="p-3 border-t border-slate-800 bg-slate-950/40 shrink-0">

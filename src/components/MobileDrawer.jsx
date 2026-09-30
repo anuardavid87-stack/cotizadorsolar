@@ -242,6 +242,17 @@ export default function MobileDrawer({ isOpen, onClose, pendingCounts }) {
             </span>
           </button>
 
+          {/* Download Android APK Button */}
+          <a
+            href="/renova-solar.apk"
+            download="renova-solar.apk"
+            onClick={onClose}
+            className="w-full flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-[#2d8a58] to-emerald-600 hover:from-[#237348] hover:to-emerald-500 text-white text-xs font-bold shadow-md transition-all cursor-pointer"
+          >
+            <Smartphone className="w-4 h-4 text-emerald-200" />
+            <span>Descargar App Android (.APK)</span>
+          </a>
+
           {/* Install PWA Button */}
           {!isInstalled && (
             <button
@@ -250,10 +261,10 @@ export default function MobileDrawer({ isOpen, onClose, pendingCounts }) {
                 installApp();
               }}
               type="button"
-              className="w-full flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold shadow-xs transition-colors cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition-colors cursor-pointer"
             >
-              <Download className="w-4 h-4" />
-              <span>Instalar Aplicación PWA</span>
+              <Download className="w-4 h-4 text-[#48bb78]" />
+              <span>Instalar como PWA</span>
             </button>
           )}
 
